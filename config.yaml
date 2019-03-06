@@ -1,0 +1,87 @@
+accessControl:
+  salt: FaaPZON3uQWQccTS62yyLwRJVXKU3gHS
+api:
+  key: 1496E978C0CB4F94AACB82AF1C038DFE
+controls:
+- children:
+  - command: M03 S1
+    name: Enable
+  - command: M03 S0
+    name: Disable
+  - command: G92 X0 Y0 Z0
+    name: Set Home
+  layout: horizontal
+  name: Laser Control
+- name: State
+  type: section
+  layout: vertical
+  children:
+  - name: Realtime State
+    # GRBL 0.8  <Idle,MPos:0.000,0.000,0.000,WPos:0.000,0.000,0.000,RX:3,0/0>
+    # Grbl 1.1  <Run|MPos:-39.430,-16.480,0.000|FS:1626,0>
+    regex: '<([^,]+)[,|][WM]Pos:([+\-\d.]+,[+\-\d.]+,[+\-\d.]+)'
+    template: 'State: {0}  Machine Position: {1}'
+    type: feedback
+  - name: GCode state
+    # [G0 G54 G17 G21 G90 G94 M0 M5 M9 T0 F300. S700.]
+    regex: 'F([\d.]+) S([\d.]+)'
+    template: 'Speed: {0}  Power: {1}'
+    type: feedback
+  - command: '?$G'
+    name: Refresh
+  - command: '$H'
+    name: Home
+  - command: '$X'
+    name: Unlock
+  - command: '!'
+    name: Pause
+  - command: '~'
+    name: Resume
+feature:
+  g90InfluencesExtruder: true
+  modelSizeDetection: false
+  temperatureGraph: false
+gcodeViewer:
+  enabled: false
+plugins:
+  announcements:
+    _config_version: 1
+    channels:
+      _blog:
+        read_until: 1550494800
+      _important:
+        read_until: 1521111600
+      _octopi:
+        read_until: 1549966200
+      _plugins:
+        read_until: 1551225600
+      _releases:
+        read_until: 1544449800
+  discovery:
+    upnpUuid: 16232e0b-5248-4159-8b16-e17ebc90d5f1
+  softwareupdate:
+    _config_version: 6
+  tracking:
+    enabled: false
+printerProfiles:
+  default: _default
+serial:
+  autoconnect: true
+  baudrate: 115200
+  disconnectOnErrors: false
+  firmwareDetection: false
+  helloCommand: M5
+  ignoreErrorsFromFirmware: true
+  neverSendChecksum: true
+  port: /dev/ttyUSB0
+server:
+  firstRun: false
+  onlineCheck:
+    enabled: false
+  pluginBlacklist:
+    enabled: true
+  secretKey: BZwsQN2Un9LEMMEqWKn7X3M9MClzvElT
+  seenWizards:
+    corewizard: 3
+    cura: null
+    tracking: null
